@@ -5,6 +5,7 @@ import FilmItem from './FilmItem';
 import Loading from './Loading';
 import { connect } from 'react-redux'
 
+
 class Search extends React.Component {
 
     constructor(props) {
@@ -55,9 +56,7 @@ class Search extends React.Component {
         })
     }
 
-
     render() {
-        console.log(this.props)
         return (
             <View style={styles.view}>
                 <TextInput
@@ -70,17 +69,21 @@ class Search extends React.Component {
                     title='Recherche'
                     onPress={() => this._searchFilm()} />
                 <FlatList
+                    data={this.state.film}
+                    extraData={this.props.favoritesFilm}
+                    keyExtractor={(item) => item.id.toString()}
+                    renderItem={({ item }) =>
+                        <FilmItem
+                            film={item}
+                            isFavorite={(this.props.favoritesFilm
+                                .findIndex(film => film.id === item.id) !== -1) ? true : false}
+                            displayForDetail={this._displayForDetail} />}
                     onEndReachedThreshold={0, 5}
                     onEndReached={() => {
                         if (this.page < this.totalPage) {
                             this._loadFilms()
                         }
-                    }}
-                    data={this.state.film}
-                    keyExtractor={(item) => item.id.toString()}
-                    renderItem={({ item }) => <FilmItem
-                        film={item}
-                        displayForDetail={this._displayForDetail} />} />
+                    }} />
 
                 <Loading isLoading={this.state.isLoading} style={styles.loading_container} />
             </View>

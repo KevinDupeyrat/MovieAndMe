@@ -1,3 +1,9 @@
+/**
+ * Création d'un Reduceur pour la gestion la liste des favorie.
+ * Ici on initialise le state qui contiendra une liste de
+ * films mis en favorie.
+ */
+
 const initialState = { favoritesFilm: [] }
 
 function toggleFavorite(state = initialState, action) {

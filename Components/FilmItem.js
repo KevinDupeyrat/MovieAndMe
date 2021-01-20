@@ -13,7 +13,16 @@ class FilmItem extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return nextProps.film.id !== nextState.film.id
+        return (nextProps.film.id !== nextState.film.id) || this.props !== nextProps
+    }
+
+    _displayFavorite() {
+        if (this.props.isFavorite) {
+            const source = require('../assets/ic_favorite.png');
+            return (
+                <Image style={styles.favoris_image} source={source}></Image>
+            )
+        }
     }
 
     render() {
@@ -24,6 +33,7 @@ class FilmItem extends React.Component {
                 <Image style={styles.image} source={{ uri: getFilmImage(this.state.film.poster_path) }}></Image>
                 <View style={styles.content}>
                     <View style={styles.header_view}>
+                        {this._displayFavorite()}
                         <Text style={styles.title_text}>{this.state.film.title}</Text>
                         <Text style={styles.vote_text}>{this.state.film.vote_average}</Text>
                     </View>
@@ -86,6 +96,12 @@ const styles = StyleSheet.create({
     date_text: {
         textAlign: 'right',
         fontSize: 14
+    },
+    favoris_image: {
+        width: 30,
+        height: 30,
+        marginRight: 10,
+        marginTop: 10
     }
 });
 

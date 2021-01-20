@@ -1,10 +1,12 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, Button, TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler';
 import { getFilmDetailFromAPI, getFilmImage } from '../API/TMDBApi';
 import Loading from './Loading';
 import moment from 'moment'
 import numeral from 'numeral'
+import { connect } from 'react-redux'
+
 
 class FilmDetail extends React.Component {
 
@@ -18,12 +20,39 @@ class FilmDetail extends React.Component {
     }
 
 
+    _toggleFavorite() {
+        const action = {
+            type: 'TOGGLE_FAVORITE',
+            value: this.state.film
+        }
+        this.props.dispatch(action)
+    }
+
+    _displayFavorisImage() {
+
+        var sourceImage = require('../assets/ic_favorite_border.png');
+
+        if (this.props.favoritesFilm.findIndex(item => item.id === this.state.film.id) !== -1) {
+            var sourceImage = require('../assets/ic_favorite.png');
+        }
+
+        return (
+            <Image style={styles.favoris_image} source={sourceImage}></Image>
+        )
+    }
+
+
     _displayFilm() {
         if (this.state.film) {
             return (
                 <ScrollView style={styles.scrollView}>
                     <Image style={styles.image} source={{ uri: getFilmImage(this.state.film.backdrop_path) }}></Image>
                     <Text style={styles.title}>{this.state.film.title}</Text>
+                    <TouchableOpacity
+                        onPress={() => this._toggleFavorite()}
+                        style={styles.favoris_button}>
+                        {this._displayFavorisImage()}
+                    </TouchableOpacity>
                     <Text style={styles.description}>{this.state.film.overview}</Text>
                     <View style={styles.detail}>
                         <Text style={styles.detail_element}>Sortie le {moment(new Date(this.state.film.release_date))
@@ -104,7 +133,29 @@ const styles = StyleSheet.create({
     },
     detail_element: {
         fontWeight: 'bold'
+    },
+    favoris_button: {
+        alignItems: 'center'
+    },
+    favoris_image: {
+        width: 40,
+        height: 40
     }
 })
 
-export default FilmDetail
+/**
+ * Ici ce fait le connexion entre notre composent FilmDetail
+ * et le Store Redux.
+ * Nous allons injecter dans les props du composent FilmDetail
+ * toute la partie du state qui concerne les favories
+ * 
+ * La méthode mapStateToProps permet de mapper le state retourné
+ * par la methode connect() aux props du composent
+ * @param {} state 
+ */
+const mapStateToProps = (state) => {
+    return {
+        favoritesFilm: state.favoritesFilm
+    }
+}
+export default connect(mapStateToProps)(FilmDetail)
