@@ -3,6 +3,7 @@ import { View, TextInput, Button, StyleSheet, FlatList } from 'react-native'
 import { getFilmFromAPI } from '../API/TMDBApi';
 import FilmItem from './FilmItem';
 import Loading from './Loading';
+import { connect } from 'react-redux'
 
 class Search extends React.Component {
 
@@ -56,6 +57,7 @@ class Search extends React.Component {
 
 
     render() {
+        console.log(this.props)
         return (
             <View style={styles.view}>
                 <TextInput
@@ -113,5 +115,9 @@ const styles = StyleSheet.create({
     }
 });
 
-
-export default Search;
+const mapStateToProps = (state) => {
+    return {
+        favoritesFilm: state.favoritesFilm
+    }
+}
+export default connect(mapStateToProps)(Search);
