@@ -8,7 +8,7 @@ class FilmItem extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            film : props.film 
+            film: props.film
         }
     }
 
@@ -20,18 +20,18 @@ class FilmItem extends React.Component {
         const { displayForDetail } = this.props
 
         return (
-            <TouchableOpacity style={style.main_container} onPress={() => displayForDetail(this.state.film.id)}>
-                <Image style={style.image} source={{uri: getFilmImage(this.state.film.poster_path)}}></Image>
-                <View style={style.content}>
-                    <View style={style.header_view}>
-                        <Text style={style.title_text}>{this.state.film.title}</Text>
-                        <Text style={style.vote_text}>{this.state.film.vote_average}</Text>
+            <TouchableOpacity style={styles.main_container} onPress={() => displayForDetail(this.state.film.id)}>
+                <Image style={styles.image} source={{ uri: getFilmImage(this.state.film.poster_path) }}></Image>
+                <View style={styles.content}>
+                    <View style={styles.header_view}>
+                        <Text style={styles.title_text}>{this.state.film.title}</Text>
+                        <Text style={styles.vote_text}>{this.state.film.vote_average}</Text>
                     </View>
-                    <View style={style.description_view}>
-                        <Text style={style.description_text} numberOfLines={4}>{this.state.film.overview}</Text>
+                    <View style={styles.description_view}>
+                        <Text style={styles.description_text} numberOfLines={4}>{this.state.film.overview}</Text>
                     </View>
-                    <View style={style.date_view}>
-                        <Text style={style.date_text}>Sortie le {this.state.film.release_date}</Text>
+                    <View style={styles.date_view}>
+                        <Text style={styles.date_text}>Sortie le {this.state.film.release_date}</Text>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -39,7 +39,7 @@ class FilmItem extends React.Component {
     }
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create({
     main_container: {
         height: 190,
         flexDirection: 'row',
